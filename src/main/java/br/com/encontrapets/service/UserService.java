@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.encontrapets.dto.CadastroRequestDto;
 import br.com.encontrapets.model.Endereco;
@@ -31,7 +32,7 @@ public class UserService {
     private EnderecoRepository adressRepository;
     
 
- 
+    @Transactional
 	public ResponseEntity<CadastroRequestDto> save(CadastroRequestDto objectloginDto) {
 		
 		Optional<Pessoa> pPessoaOpt = this.cadastroRepository.findByEmail(objectloginDto.getEmail());
