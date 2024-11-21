@@ -18,18 +18,38 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * Componente provider de configuracao de token JWT.
+ * 
+ * @author Bruno Justino. 
+ */
 @Component
 public class JwtTokenProvider {
 
+	/**
+	 * Jwt secre key configurada no arquivo application.properties da aplicacao.
+	 */
 	@Value("${jwt.secret}")
 	private String SECRET_KEY;
 
-	private final long VALIDITY = 1000 * 60 * 60; // 1 hora de validade
+	/**
+	 * Tempo de validade do token JWT.
+	 * 1 hora de validade.
+	 */
+	private static final long VALIDITY = 1000 * 60 * 60; 
 
+	/**
+	 * JpaRepository de usuario.
+	 */
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	// Método para gerar um token JWT
+	/**
+	 * Responsavel por gerar token JWT.
+	 * 
+	 * @param username - String - nome do usuario.
+	 * @return String - token jwt.
+	 */
 	public String generateToken(String username) {
 		Map<String, Object> claims = new HashMap<>();
 		return Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
@@ -37,7 +57,12 @@ public class JwtTokenProvider {
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	}
 
-	// Método para validar o token JWT
+	/**
+	 * Responsavel por validar o token JWT.
+	 * 
+	 * @param token - String - token para validar.
+	 * @return true - em caso de token valido.
+	 */
 	public boolean validateToken(String token) {
 		try {
 			Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
@@ -47,17 +72,30 @@ public class JwtTokenProvider {
 		}
 	}
 
-	// Método para obter o nome de usuário do token
+	/**
+	 * Metodo para extrair o nome de usuario do token.
+	 * 
+	 * @param token - String - token de autenticacao.
+	 * @return String - nome do usuario do token.
+	 */
 	public String getUsername(String token) {
 		Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 		return claims.getSubject();
 	}
 
-	// Método para carregar o usuário pelo nome de usuário
+
+	/**
+	 * Metodo para carregar o usuario pelo email e login.
+	 * Aqui a logica para buscar o usuario no banco de dados.
+	 * 
+	 * @param username - String - login e email do usuario.
+	 * @return UserDetails - interface spring que representa o usuario.
+	 * @throws UsernameNotFoundException - Exception de not found.
+	 */
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// Aqui a lógica para buscar o usuário no banco de dados.
 		Usuario usuario = this.usuarioRepository.findByLogin(username).get();
 		return new CustomUserDetail(usuario);
 	}
+	
 }

@@ -14,15 +14,32 @@ import br.com.encontrapets.model.Pessoa;
 import br.com.encontrapets.repository.EnderecoRepository;
 import br.com.encontrapets.repository.PessoaRepository;
 
+/**
+ * Service responsavel por detalhar dados dos usuarios.
+ * 
+ * @author Bruno Justino.
+ */
 @Service
 public class UserDetailService {
 	
+	/**
+     * JpaRepository de endereco.
+     */
     @Autowired
     private EnderecoRepository enderecoRepository;
     
+    /**
+     * JpaRepository de pessoa.
+     */
     @Autowired
     private PessoaRepository pessoaRepository;
     
+    /**
+     * Carrega as informacoes de um determinado usuario.
+     * 
+     * @param username - String - login ou email do usuario.
+     * @return ResponseEntity - 200 OK em caso de sucesso.
+     */
     @Transactional
     public ResponseEntity<UserDetailDto> loadUserDetails(final String username){
     	final Optional<Pessoa> oOptionalPessoa = this.pessoaRepository.findByEmail(username);

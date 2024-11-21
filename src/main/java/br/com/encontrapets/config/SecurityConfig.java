@@ -9,27 +9,49 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Classe responsavel por realizar as configuracoes de seguranca da aplicacao.
+ * 
+ * @author Bruno Justino. 
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+	/**
+	 * Provider do token JWT.
+	 */
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Retorn o filtro Jwt com o provider configurado.
+     * 
+     * @return JwtAuthenticationFilter - filtro customizado para tratar as requisicoes com token jwt.
+     */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider);
     }
  
-    @Bean
+    /**
+     * Filterchain de configuracao da aplicacao.
+     * Requer autenticação para qualquer requisição.
+     * Adiciona o filtro JWT antes do filtro de autenticação padrão.
+     * 
+     * @param http
+     * @return
+     * @throws Exception
+     */
+	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and()
             .csrf().disable()   
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             .and()
             .authorizeRequests()
-                .anyRequest().authenticated();  // Requer autenticação para qualquer outra requisição
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);  // Adiciona o filtro JWT antes do filtro de autenticação padrão
-        return http.build();  // Retorna a configuração de segurança construída
+                .anyRequest().authenticated();  
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); 
+        return http.build();  
     }
 }
