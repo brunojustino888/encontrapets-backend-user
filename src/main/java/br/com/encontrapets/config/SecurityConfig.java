@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -22,13 +23,12 @@ public class SecurityConfig {
  
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors() // Habilita suporte ao CORS
+        http.cors().and()
+            .csrf().disable()   
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             .and()
-            .csrf().disable() // Desabilita CSRF apenas se necessário
             .authorizeRequests()
-            .anyRequest().authenticated() // Ajuste conforme suas permissões
-            .and()
-            .httpBasic();
+                .anyRequest().authenticated();  // Requer autenticação para qualquer outra requisição
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);  // Adiciona o filtro JWT antes do filtro de autenticação padrão
         return http.build();  // Retorna a configuração de segurança construída
     }
