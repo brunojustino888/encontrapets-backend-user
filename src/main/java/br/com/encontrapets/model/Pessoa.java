@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "T_PESSOA")
+@Table(name = "T_PESSOA", schema = "encontrapetsdb")
 public class Pessoa {
 	
     @Id

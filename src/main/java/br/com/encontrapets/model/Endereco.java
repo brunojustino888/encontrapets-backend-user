@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "T_ENDERECO")
+@Table(name = "T_ENDERECO", schema = "encontrapetsdb")
 public class Endereco {
 	
     @Id
