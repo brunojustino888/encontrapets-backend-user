@@ -12,11 +12,11 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Permite CORS para todas as rotas
-                        .allowedOrigins("*") // Origem permitida
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
-                        .allowedHeaders("*") // Permite todos os cabeçalhos
-                        .allowCredentials(true); // Permite cookies se necessário
+                registry.addMapping("/**")  
+                        .allowedOrigins("*")  
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  
+                        .allowedHeaders("*")  
+                        .allowCredentials(true); 
             }
         };
     }
