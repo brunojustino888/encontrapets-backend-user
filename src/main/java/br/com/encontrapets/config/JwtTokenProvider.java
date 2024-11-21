@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.encontrapets.model.CustomUserDetail;
 import br.com.encontrapets.model.Usuario;
@@ -53,6 +54,7 @@ public class JwtTokenProvider {
 	}
 
 	// Método para carregar o usuário pelo nome de usuário
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// Aqui a lógica para buscar o usuário no banco de dados.
 		Usuario usuario = this.usuarioRepository.findByLogin(username).get();
