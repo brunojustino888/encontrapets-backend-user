@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.encontrapets.model.Pessoa;
 
-public interface CadastroRepository extends JpaRepository<Pessoa, String> {
+public interface PessoaRepository extends JpaRepository<Pessoa, String> {
     
 	Optional<Pessoa> findByEmail(String email);
 

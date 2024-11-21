@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CadastroRequestDto {
+public class AlteracaoRequestDto {
 
 	@NotBlank(message = "O nome é obrigatório.")
 	@Size(min = 2, message = "Nome deve ter no mínimo 2 caracteres.")

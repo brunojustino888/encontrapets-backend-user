@@ -1,7 +1,6 @@
 package br.com.encontrapets.service;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +10,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.encontrapets.dto.CadastroRequestDto;
+import br.com.encontrapets.dto.AlteracaoRequestDto;
 import br.com.encontrapets.model.Endereco;
 import br.com.encontrapets.model.Pessoa;
 import br.com.encontrapets.model.Usuario;
-import br.com.encontrapets.repository.CadastroRepository;
+import br.com.encontrapets.repository.PessoaRepository;
 import br.com.encontrapets.repository.EnderecoRepository;
 import br.com.encontrapets.repository.UsuarioRepository;
 
 @Service
-public class UserService {
+public class UpdateUserDataService {
 	
     @Autowired
-    private CadastroRepository cadastroRepository;
+    private PessoaRepository cadastroRepository;
     
     @Autowired
     private UsuarioRepository userRepository;
@@ -31,28 +30,23 @@ public class UserService {
     @Autowired
     private EnderecoRepository adressRepository;
     
-
+    
+    
     @Transactional
-	public ResponseEntity<CadastroRequestDto> save(CadastroRequestDto objectloginDto) {
-		
-		Optional<Pessoa> pPessoaOpt = this.cadastroRepository.findByEmail(objectloginDto.getEmail());
+	public ResponseEntity<AlteracaoRequestDto> save(AlteracaoRequestDto aAlteracaoRequestDto) {
 
-		if (pPessoaOpt.isPresent()) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(objectloginDto);
-		}
-		
-		objectloginDto.setSenha(new BCryptPasswordEncoder().encode(objectloginDto.getSenha()));
-		objectloginDto.setBairro(objectloginDto.getBairro().toUpperCase()); 
-		objectloginDto.setCidade(objectloginDto.getCidade().toUpperCase()); 
-		objectloginDto.setEstado(objectloginDto.getEstado().toUpperCase()); 
-		objectloginDto.setLogradouro(objectloginDto.getLogradouro().toUpperCase()); 
-		objectloginDto.setNome(objectloginDto.getNome().toUpperCase()); 
-		objectloginDto.setNumeroComplemento(objectloginDto.getNumeroComplemento().toUpperCase()); 
+    	aAlteracaoRequestDto.setSenha(new BCryptPasswordEncoder().encode(aAlteracaoRequestDto.getSenha()));
+		aAlteracaoRequestDto.setBairro(aAlteracaoRequestDto.getBairro().toUpperCase()); 
+		aAlteracaoRequestDto.setCidade(aAlteracaoRequestDto.getCidade().toUpperCase()); 
+		aAlteracaoRequestDto.setEstado(aAlteracaoRequestDto.getEstado().toUpperCase()); 
+		aAlteracaoRequestDto.setLogradouro(aAlteracaoRequestDto.getLogradouro().toUpperCase()); 
+		aAlteracaoRequestDto.setNome(aAlteracaoRequestDto.getNome().toUpperCase()); 
+		aAlteracaoRequestDto.setNumeroComplemento(aAlteracaoRequestDto.getNumeroComplemento().toUpperCase()); 
 		
 		Usuario uUsuario = new Usuario();
-		BeanUtils.copyProperties(objectloginDto, uUsuario);
+		BeanUtils.copyProperties(aAlteracaoRequestDto, uUsuario);
 		uUsuario.setIdPerfil(2);
-		uUsuario.setLogin(objectloginDto.getEmail());
+		uUsuario.setLogin(aAlteracaoRequestDto.getEmail());
 		uUsuario.setFlagBloqueio("N");
 		uUsuario.setFlagExclusao("N");
 		uUsuario.setUserCadastro("SYSTEM");
@@ -62,7 +56,7 @@ public class UserService {
 		uUsuario = this.userRepository.save(uUsuario);
 		
 		Endereco eEndereco = new Endereco();
-		BeanUtils.copyProperties(objectloginDto, eEndereco);
+		BeanUtils.copyProperties(aAlteracaoRequestDto, eEndereco);
 		eEndereco.setUserCadastro("SYSTEM");
 		eEndereco.setUserAtualizacao("SYSTEM");
 		eEndereco.setDataAtualizacao(new Date());
@@ -71,7 +65,7 @@ public class UserService {
 		eEndereco = this.adressRepository.save(eEndereco);
 		
 		Pessoa pessoaTarget = new Pessoa();
-		BeanUtils.copyProperties(objectloginDto, pessoaTarget);
+		BeanUtils.copyProperties(aAlteracaoRequestDto, pessoaTarget);
 		pessoaTarget.setIdEndereco(eEndereco.getIdEndereco());
 		pessoaTarget.setIdUsuario(uUsuario.getIdUsuario());
 		pessoaTarget.setUserCadastro("SYSTEM");
@@ -80,7 +74,7 @@ public class UserService {
 		pessoaTarget.setDataCadastro(new Date());
 		this.cadastroRepository.save(pessoaTarget);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(objectloginDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(aAlteracaoRequestDto);
  
 	}
 	
