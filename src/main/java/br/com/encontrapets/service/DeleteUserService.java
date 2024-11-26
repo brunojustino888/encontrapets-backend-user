@@ -50,8 +50,8 @@ public class DeleteUserService {
     	final Pessoa pessoa = this.pessoaRepository.findByEmail(username).get();  
     	final Endereco eEndereco = this.enderecoRepository.findById(pessoa.getIdEndereco()).get();
     	final Usuario uUsuario = this.userRepository.findById(pessoa.getIdUsuario()).get();
-    	this.enderecoRepository.delete(eEndereco);
     	this.pessoaRepository.delete(pessoa);
+    	this.enderecoRepository.delete(eEndereco);
     	this.userRepository.delete(uUsuario);
     	return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
