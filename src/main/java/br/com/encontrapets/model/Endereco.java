@@ -33,6 +33,12 @@ public class Endereco {
     @Column
     private Long idEnderecoUsuario;
     
+    /**
+	 * Representa o identificador do post caso o endereco seja de um post e nao do cadastro.
+	 */
+    @Column
+    private Long idPost;
+    
 	/**
 	 * Representa o logradouro do endereco.
 	 */
