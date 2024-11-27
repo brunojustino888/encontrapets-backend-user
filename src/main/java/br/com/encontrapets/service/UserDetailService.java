@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.encontrapets.dto.UserDetailDto;
 import br.com.encontrapets.model.Endereco;
@@ -40,7 +39,6 @@ public class UserDetailService {
      * @param username - String - login ou email do usuario.
      * @return ResponseEntity - 200 OK em caso de sucesso.
      */
-    @Transactional
     public ResponseEntity<UserDetailDto> loadUserDetails(final String username){
     	final Optional<Pessoa> oOptionalPessoa = this.pessoaRepository.findByEmail(username);
     	if(!oOptionalPessoa.isPresent()) {
