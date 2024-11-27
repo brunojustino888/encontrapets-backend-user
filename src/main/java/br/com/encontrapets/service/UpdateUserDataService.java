@@ -73,7 +73,7 @@ public class UpdateUserDataService {
 		uUsuario = this.userRepository.save(uUsuario);
 		Endereco eEndereco = new Endereco();
 		BeanUtils.copyProperties(aAlteracaoRequestDto, eEndereco);
-		eEndereco.setIdEndereco(this.adressRepository.findByIdEnderecoUsuario(uUsuario.getIdUsuario()).get().getIdEndereco());
+		eEndereco.setIdEndereco(this.adressRepository.findEnderecoPrincipal(uUsuario.getIdUsuario()).get().getIdEndereco());
 		eEndereco.setUserAtualizacao(aAlteracaoRequestDto.getEmail());
 		eEndereco.setDataCadastro(uUsuarioBefore.getDataCadastro());
 		eEndereco.setUserCadastro(uUsuarioBefore.getUserCadastro());
