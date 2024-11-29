@@ -39,9 +39,9 @@ public class SecurityConfig {
      * Requer autenticação para qualquer requisição.
      * Adiciona o filtro JWT antes do filtro de autenticação padrão.
      * 
-     * @param http
-     * @return
-     * @throws Exception
+     * @param http - HttpSecurity - objeto spring de de configuracoes de seguranca http.
+     * @return SecurityFilterChain - cadeia de filtros de seguranca da aplicacao.
+     * @throws Exception - em caso de falha.
      */
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -56,7 +56,7 @@ public class UpdateUserDataService {
 		aAlteracaoRequestDto.setLogradouro(aAlteracaoRequestDto.getLogradouro().toUpperCase()); 
 		aAlteracaoRequestDto.setNome(aAlteracaoRequestDto.getNome().toUpperCase()); 
 		aAlteracaoRequestDto.setNumeroComplemento(aAlteracaoRequestDto.getNumeroComplemento().toUpperCase()); 
-		aAlteracaoRequestDto.setFlagPhoneVisivel(aAlteracaoRequestDto.getFlagPhoneVisivel().toUpperCase()); 
+		aAlteracaoRequestDto.setFlagPhoneVisivel("S"); 
 		Usuario uUsuario = new Usuario();
 		Usuario uUsuarioBefore = this.userRepository.findByLogin(aAlteracaoRequestDto.getEmail()).get();
 		BeanUtils.copyProperties(aAlteracaoRequestDto, uUsuario);
